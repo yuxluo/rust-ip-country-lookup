@@ -1,6 +1,5 @@
 extern crate csv;
 
-use rand::Rng;
 use std::error::Error;
 use std::fs::File;
 use std::process;
@@ -28,22 +27,12 @@ fn run() -> Result<(), Box<Error>> {
     }Ok(())
 }
 
-
-// fn get_client_country(cli_ip :u32) -> String {
-//     unsafe  {
-//         let index = binary_search(cli_ip, 0, IP_MAP.len() - 1);
-//         println!("{}", IP_MAP[index].country_code);
-//     }
-//     return "";
-// }
-
 fn binary_search(cli_ip :u32, head :usize, tail :usize) -> usize {
     unsafe {
-
         let mut mutable_head = head;
         let mut mutable_tail = tail;
         while mutable_tail >= mutable_head {
-            let mut mutable_mid :usize = (mutable_head + mutable_tail) / 2;
+            let mutable_mid :usize = (&mutable_head + &mutable_tail) / 2;
             if cli_ip > IP_MAP[mutable_mid].end_ip {
                 mutable_head = mutable_mid + 1;
             }
@@ -58,20 +47,13 @@ fn binary_search(cli_ip :u32, head :usize, tail :usize) -> usize {
 }
 
 
-/// Returns the first positional argument sent to this process. If there are no
-/// positional arguments, then this returns an error.
 fn main() {
     if let Err(err) = run() {
         println!("{}", err);
         process::exit(1);
     }
     unsafe  {
-        let mut i = 0;
-        while i < 10000000 {
-            let mut rng = rand::thread_rng();
-            let n:u32 = rng.gen();
-            binary_search(n, 0, IP_MAP.len() - 1);
-            i += 1;
-        }
+        let index = binary_search(2890442453, 0, IP_MAP.len() - 1);
+        println!("{}", IP_MAP[index].country_code);
     }
 }
